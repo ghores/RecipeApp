@@ -88,11 +88,11 @@ dependencies {
     implementation ("io.github.inflationx:calligraphy3:3.1.1")
     implementation ("io.github.inflationx:viewpump:2.1.1")
     //Other
-    implementation ("com.facebook.shimmer:shimmer:0.5.0")
-    implementation ("com.tokars:shimmer-recyclerview:0.0.5")
+    implementation (libs.shimmer)
+    implementation (libs.shimmerrecyclerview)
     implementation ("com.airbnb.android:lottie:5.2.0")
     implementation ("com.github.MrNouri:DynamicSizes:1.0")
-    implementation ("kr.co.prnd:readmore-textview:2.0.1")
+    implementation ("kr.co.prnd:readmore-textview:1.0.0")
 }
 kapt {
     correctErrorTypes = true
