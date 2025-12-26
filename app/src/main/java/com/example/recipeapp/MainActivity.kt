@@ -1,9 +1,12 @@
 package com.example.recipeapp
 
+import android.content.Context
 import  android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.example.recipeapp.databinding.ActivityMainBinding
+import com.example.recipeapp.utils.MyApp
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 
 class MainActivity : AppCompatActivity() {
     //Binding
@@ -22,6 +25,11 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
 
         }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        val app = newBase?.applicationContext as MyApp
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase, app.viewPump))
     }
 
     override fun onNavigateUp(): Boolean {
