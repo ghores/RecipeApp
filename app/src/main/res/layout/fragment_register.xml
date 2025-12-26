@@ -25,26 +25,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:padding="@dimen/_20mdp"
-                android:src="@drawable/register_logo" />
+                android:padding="@dimen/_20mdp" />
             <!--FirstName-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nameTxtLay"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/DarkGreenTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/first_name"
-                android:textColor="@color/darkGreen"
-                app:boxCornerRadiusBottomEnd="@dimen/_15mdp"
-                app:boxCornerRadiusBottomStart="@dimen/_15mdp"
-                app:boxCornerRadiusTopEnd="@dimen/_15mdp"
-                app:boxCornerRadiusTopStart="@dimen/_15mdp"
-                app:boxStrokeColor="@color/darkGreen"
-                app:boxStrokeErrorColor="@color/tart_orange"
-                app:boxStrokeWidth="@dimen/_1mdp"
-                app:hintTextColor="@color/moonstoneBlue"
-                app:startIconDrawable="@drawable/ic_round_person_24"
-                app:startIconTint="@color/darkGreen">
+                app:startIconDrawable="@drawable/ic_round_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameEdt"
@@ -55,22 +44,11 @@
             <!--LastName-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/lastNameTxtLay"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/DarkGreenTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10mdp"
                 android:hint="@string/last_name"
-                android:textColor="@color/darkGreen"
-                app:boxCornerRadiusBottomEnd="@dimen/_15mdp"
-                app:boxCornerRadiusBottomStart="@dimen/_15mdp"
-                app:boxCornerRadiusTopEnd="@dimen/_15mdp"
-                app:boxCornerRadiusTopStart="@dimen/_15mdp"
-                app:boxStrokeColor="@color/darkGreen"
-                app:boxStrokeErrorColor="@color/tart_orange"
-                app:boxStrokeWidth="@dimen/_1mdp"
-                app:hintTextColor="@color/moonstoneBlue"
-                app:startIconDrawable="@drawable/ic_round_person_24"
-                app:startIconTint="@color/darkGreen">
+                app:startIconDrawable="@drawable/ic_round_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/lastNameEdt"
@@ -81,22 +59,11 @@
             <!--UserName-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/userNameTxtLay"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/DarkGreenTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10mdp"
                 android:hint="@string/username"
-                android:textColor="@color/darkGreen"
-                app:boxCornerRadiusBottomEnd="@dimen/_15mdp"
-                app:boxCornerRadiusBottomStart="@dimen/_15mdp"
-                app:boxCornerRadiusTopEnd="@dimen/_15mdp"
-                app:boxCornerRadiusTopStart="@dimen/_15mdp"
-                app:boxStrokeColor="@color/darkGreen"
-                app:boxStrokeErrorColor="@color/tart_orange"
-                app:boxStrokeWidth="@dimen/_1mdp"
-                app:hintTextColor="@color/moonstoneBlue"
-                app:startIconDrawable="@drawable/ic_round_person_24"
-                app:startIconTint="@color/darkGreen">
+                app:startIconDrawable="@drawable/ic_round_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/userNameEdt"
@@ -107,6 +74,7 @@
             <!--Email-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTxtLay"
+                style="@style/DarkGreenTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
@@ -125,15 +93,11 @@
     <!--Register-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/submitBtn"
+        style="@style/DarkGreenMaterialButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/_45mdp"
         android:layout_margin="@dimen/_15mdp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
         android:text="@string/register"
-        android:textSize="@dimen/_14font_mdp"
-        app:backgroundTint="@color/darkGreen"
-        app:cornerRadius="@dimen/_15mdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
