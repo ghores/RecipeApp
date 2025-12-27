@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.os.Build
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,11 +28,11 @@ object CheckConnection {
         addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         //Android M
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
         }
         //Android P
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             addCapability(NetworkCapabilities.NET_CAPABILITY_FOREGROUND)
         }
     }.build()

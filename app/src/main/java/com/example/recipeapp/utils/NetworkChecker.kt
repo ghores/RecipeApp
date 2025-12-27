@@ -16,7 +16,6 @@ class NetworkChecker @Inject constructor(
     private val isNetworkAvailable = MutableStateFlow(false)
     private var capabilities: NetworkCapabilities? = null
 
-
     fun checkNetworkAvailability(): MutableStateFlow<Boolean> {
         //Register
         connectivityManager.registerNetworkCallback(request, this)
