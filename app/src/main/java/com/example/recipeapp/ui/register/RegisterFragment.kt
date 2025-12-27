@@ -86,17 +86,17 @@ class RegisterFragment : Fragment() {
     }
 
     private fun loadRegisterData() {
-        viewModel.registerData.observe(viewLifecycleOwner) {response ->
+        viewModel.registerData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkRequest.Loading -> {
 
                 }
 
-                is NetworkRequest.Error -> {
+                is NetworkRequest.Success -> {
 
                 }
 
-                is NetworkRequest.Success -> {
+                is NetworkRequest.Error -> {
                     binding.root.showSnackBar(response.message!!)
                 }
             }
