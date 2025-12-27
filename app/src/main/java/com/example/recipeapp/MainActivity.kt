@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.example.recipeapp.databinding.ActivityMainBinding
 import com.example.recipeapp.utils.MyApp
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     //Binding
     private var _binding: ActivityMainBinding? = null
