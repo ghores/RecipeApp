@@ -22,4 +22,11 @@ class RegisterViewModel @Inject constructor(private val registerRepository: Regi
         val response = registerRepository.postRegister(apikey, body)
         registerData.value = NetworkResponse(response).generalNetworkResponse()
     }
+
+    //Stored data
+    fun saveRegisterData(username: String, hash: String) = viewModelScope.launch {
+        registerRepository.saveRegisterData(username, hash)
+    }
+
+    val readRegisterData = registerRepository.readRegisterData
 }

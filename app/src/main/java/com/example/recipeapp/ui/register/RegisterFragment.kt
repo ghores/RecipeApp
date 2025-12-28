@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentRegisterBinding
 import com.example.recipeapp.models.register.BodyRegister
-import com.example.recipeapp.models.register.ResponseRegister
 import com.example.recipeapp.utils.Constants.MY_API_KEY
 import com.example.recipeapp.utils.NetworkChecker
 import com.example.recipeapp.utils.NetworkRequest
@@ -93,7 +91,9 @@ class RegisterFragment : Fragment() {
                 }
 
                 is NetworkRequest.Success -> {
-
+                    response.data?.let {
+                        viewModel.saveRegisterData(it.username.toString(), it.hash.toString())
+                    }
                 }
 
                 is NetworkRequest.Error -> {

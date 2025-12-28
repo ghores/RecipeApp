@@ -7,4 +7,9 @@ object Constants {
 
     //APIs
     const val API_KEY = "apiKey"
+
+    //Register datastore
+    const val REGISTER_USERNAME = "register_username"
+    const val REGISTER_USERNAME_INFO = "register_username_info"
+    const val REGISTER_HASH = "register_hash"
 }
