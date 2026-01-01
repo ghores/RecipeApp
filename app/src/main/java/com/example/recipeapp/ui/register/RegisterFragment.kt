@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentRegisterBinding
@@ -38,7 +39,7 @@ class RegisterFragment : Fragment() {
     private var email = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        _binding = FragmentRegisterBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -93,6 +94,8 @@ class RegisterFragment : Fragment() {
                 is NetworkRequest.Success -> {
                     response.data?.let {
                         viewModel.saveRegisterData(it.username.toString(), it.hash.toString())
+                        findNavController().popBackStack(R.id.registerFragment, true)
+                        findNavController().navigate(R.id.actionToRecipe)
                     }
                 }
 

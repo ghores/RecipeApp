@@ -8,6 +8,9 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     namespace = "com.example.recipeapp"
     compileSdk = 35
 

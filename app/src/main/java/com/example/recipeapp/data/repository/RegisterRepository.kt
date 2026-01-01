@@ -1,6 +1,8 @@
 package com.example.recipeapp.data.repository
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -33,7 +35,7 @@ class RegisterRepository @Inject constructor(
         val hash = stringPreferencesKey(REGISTER_HASH)
     }
 
-    private val Context.dataStore by preferencesDataStore(name = REGISTER_USERNAME_INFO)
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = REGISTER_USERNAME_INFO)
 
     suspend fun saveRegisterData(username: String, hash: String) {
         context.dataStore.edit {
