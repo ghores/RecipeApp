@@ -4,6 +4,7 @@ import android.content.Context
 import  android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.recipeapp.databinding.ActivityMainBinding
 import com.example.recipeapp.utils.MyApp
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,10 +24,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         //Setup nav host
         navHost = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
-        //InitViews
-        binding.apply {
-
-        }
+        binding.mainBottomNavigation.background = null
+        binding.mainBottomNavigation.setupWithNavController(navHost.navController)
     }
 
     override fun attachBaseContext(newBase: Context?) {
