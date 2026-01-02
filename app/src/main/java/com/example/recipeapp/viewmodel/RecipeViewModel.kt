@@ -20,9 +20,9 @@ class RecipeViewModel @Inject constructor(private val recipeRepository: RecipeRe
     fun popularQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
         queries[Constants.API_KEY] = Constants.MY_API_KEY
-        queries["sort"] = "popularity"
-        queries["number"] = "10"
-        queries["addRecipeInformation"] = "true"
+        queries[Constants.SORT] = Constants.POPULARITY
+        queries[Constants.NUMBER] = "10"
+        queries[Constants.ADD_RECIPE_INFORMATION] = Constants.TRUE
         return queries
     }
 

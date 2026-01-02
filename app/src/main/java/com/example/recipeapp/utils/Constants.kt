@@ -5,8 +5,15 @@ object Constants {
     const val CONNECTION_TIME = 60L
     const val MY_API_KEY = "93df2098721b4558a4484b21897cf5c1"
 
-    //APIs
+    //APIs key
     const val API_KEY = "apiKey"
+    const val SORT = "sort"
+    const val NUMBER = "number"
+    const val ADD_RECIPE_INFORMATION = "addRecipeInformation"
+
+    //APIS value
+    const val POPULARITY = "popularity"
+    const val TRUE = "true"
 
     //Register datastore
     const val REGISTER_USERNAME = "register_username"
