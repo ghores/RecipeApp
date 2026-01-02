@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
     <!--NavHost-->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navHost"
@@ -15,7 +14,6 @@
         android:layout_height="match_parent"
         app:defaultNavHost="true"
         app:navGraph="@navigation/navigation_main" />
-
     <!--Bottom menu-->
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/mainBottomAppBar"
@@ -39,7 +37,6 @@
             app:menu="@menu/menu_main" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
-
     <!--Menu-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainFabMenu"

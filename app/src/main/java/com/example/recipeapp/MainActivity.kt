@@ -3,6 +3,7 @@ package com.example.recipeapp
 import android.content.Context
 import  android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.recipeapp.databinding.ActivityMainBinding
@@ -26,6 +27,26 @@ class MainActivity : AppCompatActivity() {
         navHost = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
         binding.mainBottomNavigation.background = null
         binding.mainBottomNavigation.setupWithNavController(navHost.navController)
+        //Gone bottom menu
+        navHost.navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.splashFragment -> visibilityBottomMenu(false)
+                R.id.registerFragment -> visibilityBottomMenu(false)
+                else -> visibilityBottomMenu(true)
+            }
+        }
+    }
+
+    private fun visibilityBottomMenu(isMenuVisible: Boolean) {
+        binding.apply {
+            if (isMenuVisible) {
+                mainBottomAppBar.isVisible = true
+                mainFabMenu.isVisible = true
+            } else {
+                mainBottomAppBar.isVisible = false
+                mainFabMenu.isVisible = false
+            }
+        }
     }
 
     override fun attachBaseContext(newBase: Context?) {
