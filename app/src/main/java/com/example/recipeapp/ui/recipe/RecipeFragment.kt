@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.recipeapp.R
 import com.example.recipeapp.adapter.PopularAdapter
 import com.example.recipeapp.databinding.FragmentRecipeBinding
+import com.example.recipeapp.models.recipe.ResponseRecipes
+import com.example.recipeapp.utils.Constants
 import com.example.recipeapp.utils.NetworkRequest
 import com.example.recipeapp.utils.setupRecyclerView
 import com.example.recipeapp.utils.showSnackBar
@@ -19,6 +22,7 @@ import com.example.recipeapp.viewmodel.RecipeViewModel
 import com.example.recipeapp.viewmodel.RegisterViewModel
 import com.todkars.shimmer.ShimmerRecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,6 +38,7 @@ class RecipeFragment : Fragment() {
     //Other
     private val recipeViewModel: RecipeViewModel by viewModels()
     private val registerViewModel: RegisterViewModel by viewModels()
+    private var autoScrollIndex = 0
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -64,6 +69,7 @@ class RecipeFragment : Fragment() {
                             if (data.results!!.isNotEmpty()) {
                                 popularAdapter.setData(data.results)
                                 initPopularRecycler()
+                                autoScrollPopular(data.results)
                             }
                         }
                     }
@@ -77,13 +83,27 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initPopularRecycler() {
-        binding.popularList.setupRecyclerView(
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false),
-            popularAdapter
-        )
+        val snapHelper = LinearSnapHelper()
+        binding.popularList.setupRecyclerView(LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false), popularAdapter)
+        //Snap
+        snapHelper.attachToRecyclerView(binding.popularList)
         //Click
         popularAdapter.setOnItemClickListener {
             //Go to detail page
+        }
+    }
+
+    private fun autoScrollPopular(list: List<ResponseRecipes.Result>) {
+        lifecycleScope.launch {
+            repeat(Constants.REPEAT_TIME) {
+                delay(Constants.DELAY_TIME)
+                if (autoScrollIndex < list.size) {
+                    autoScrollIndex++
+                } else {
+                    autoScrollIndex = 0
+                }
+                binding.popularList.smoothScrollToPosition(autoScrollIndex)
+            }
         }
     }
 

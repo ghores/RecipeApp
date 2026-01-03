@@ -21,8 +21,6 @@ class PopularAdapter @Inject constructor() : RecyclerView.Adapter<PopularAdapter
     //List
     private var items = emptyList<ResponseRecipes.Result>()
 
-
-    //Data
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularAdapter.ViewHolder {
         binding = ItemPopularBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder()
