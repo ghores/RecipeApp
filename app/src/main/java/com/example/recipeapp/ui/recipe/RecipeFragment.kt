@@ -52,10 +52,13 @@ class RecipeFragment : Fragment() {
         lifecycleScope.launch { showUserName() }
         //Call api
         recipeViewModel.callPopularApi(recipeViewModel.popularQueries())
+        recipeViewModel.callRecentApi(recipeViewModel.recentQueries())
         //Load data
         loadPopularData()
+        loadRecentData()
     }
 
+    //---Popular---//
     private fun loadPopularData() {
         binding.apply {
             recipeViewModel.popularData.observe(viewLifecycleOwner) {response->
@@ -106,6 +109,35 @@ class RecipeFragment : Fragment() {
             }
         }
     }
+
+    //---Recent---//
+    private fun loadRecentData() {
+        binding.apply {
+            recipeViewModel.recentData.observe(viewLifecycleOwner) {response->
+                when(response) {
+                    is NetworkRequest.Loading ->{
+                        setupLoading(true, recipesList)
+                    }
+                    is NetworkRequest.Success ->{
+                        setupLoading(false, recipesList)
+                        response.data?.let {data ->
+                            if (data.results!!.isNotEmpty()) {
+                                initRecentRecycler()
+                            }
+                        }
+                    }
+                    is NetworkRequest.Error ->{
+                        setupLoading(false, recipesList)
+                        root.showSnackBar(response.message!!)
+                    }
+                }
+            }
+        }
+    }
+    private fun initRecentRecycler() {
+        binding.recipesList.setupRecyclerView(LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false), popularAdapter)
+    }
+
 
     private fun setupLoading(isShownLoading: Boolean, shimmer: ShimmerRecyclerView) {
         shimmer.apply {
