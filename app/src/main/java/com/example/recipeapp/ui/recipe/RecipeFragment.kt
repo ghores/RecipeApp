@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.recipeapp.R
 import com.example.recipeapp.adapter.PopularAdapter
+import com.example.recipeapp.adapter.RecentAdapter
 import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.example.recipeapp.models.recipe.ResponseRecipes
 import com.example.recipeapp.utils.Constants
@@ -34,6 +35,8 @@ class RecipeFragment : Fragment() {
 
     @Inject
     lateinit var popularAdapter: PopularAdapter
+    @Inject
+    lateinit var recentAdapter: RecentAdapter
 
     //Other
     private val recipeViewModel: RecipeViewModel by viewModels()
@@ -122,6 +125,7 @@ class RecipeFragment : Fragment() {
                         setupLoading(false, recipesList)
                         response.data?.let {data ->
                             if (data.results!!.isNotEmpty()) {
+                                recentAdapter.setData(data.results)
                                 initRecentRecycler()
                             }
                         }
@@ -135,7 +139,11 @@ class RecipeFragment : Fragment() {
         }
     }
     private fun initRecentRecycler() {
-        binding.recipesList.setupRecyclerView(LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false), popularAdapter)
+        binding.recipesList.setupRecyclerView(LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false), recentAdapter)
+        //Click
+        recentAdapter.setOnItemClickListener {
+            //Go to detail page
+        }
     }
 
 
