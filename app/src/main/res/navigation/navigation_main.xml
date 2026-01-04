@@ -73,7 +73,9 @@
         tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/actionMenuToRecipe"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:popUpTo="@id/recipeFragment"
+            app:popUpToInclusive="true" />
     </dialog>
 
 </navigation>

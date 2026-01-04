@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.data.database.RecipeEntity
+import com.example.recipeapp.data.repository.MenuRepository
 import com.example.recipeapp.data.repository.RecipeRepository
 import com.example.recipeapp.models.recipe.ResponseRecipes
 import com.example.recipeapp.utils.Constants
@@ -18,7 +19,10 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class RecipeViewModel @Inject constructor(private val recipeRepository: RecipeRepository) : ViewModel() {
+class RecipeViewModel @Inject constructor(
+    private val recipeRepository: RecipeRepository,
+    private val menuRepository: MenuRepository
+) : ViewModel() {
 
     //---Popular---//
     //Queries
@@ -56,11 +60,20 @@ class RecipeViewModel @Inject constructor(private val recipeRepository: RecipeRe
 
     //---Recent---//
     //Queries
+    private var mealType = Constants.MAIN_COURSE
+    private var dietType = Constants.GLUTEN_FREE
+
     fun recentQueries(): HashMap<String, String> {
+        viewModelScope.launch {
+            menuRepository.readMenuData.collect{
+                mealType = it.mealTitle
+                dietType = it.dietTile
+            }
+        }
         val queries: HashMap<String, String> = HashMap()
         queries[Constants.API_KEY] = Constants.MY_API_KEY
-        queries[Constants.TYPE] = Constants.MAIN_COURSE
-        queries[Constants.DIET] = Constants.GLUTEN_FREE
+        queries[Constants.TYPE] = mealType
+        queries[Constants.DIET] = dietType
         queries[Constants.NUMBER] = Constants.FULL_COUNT.toString()
         queries[Constants.ADD_RECIPE_INFORMATION] = Constants.TRUE
         return queries

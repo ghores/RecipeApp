@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.recipeapp.R
@@ -43,7 +44,7 @@ class RecipeFragment : Fragment() {
     private val recipeViewModel: RecipeViewModel by viewModels()
     private val registerViewModel: RegisterViewModel by viewModels()
     private var autoScrollIndex = 0
-
+    private val args: RecipeFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRecipeBinding.inflate(layoutInflater)
@@ -134,7 +135,7 @@ class RecipeFragment : Fragment() {
     private fun callRecentData() {
         initRecentRecycler()
         recipeViewModel.readRecentFromDb.onceObserve(viewLifecycleOwner) { database ->
-            if (database.isNotEmpty() && database.size > 1) {
+            if (database.isNotEmpty() && database.size > 1 && !args.isUpdateData) {
                 database[1].response.results?.let { result ->
                     setupLoading(false, binding.recipesList)
                     recentAdapter.setData(result)
