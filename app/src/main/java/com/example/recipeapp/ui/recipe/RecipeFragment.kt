@@ -17,6 +17,7 @@ import com.example.recipeapp.databinding.FragmentRecipeBinding
 import com.example.recipeapp.models.recipe.ResponseRecipes
 import com.example.recipeapp.utils.Constants
 import com.example.recipeapp.utils.NetworkRequest
+import com.example.recipeapp.utils.onceObserve
 import com.example.recipeapp.utils.setupRecyclerView
 import com.example.recipeapp.utils.showSnackBar
 import com.example.recipeapp.viewmodel.RecipeViewModel
@@ -53,8 +54,8 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //Show username
         lifecycleScope.launch { showUserName() }
-        //Call api
-        recipeViewModel.callPopularApi(recipeViewModel.popularQueries())
+        //Call data
+        callPopularData()
         recipeViewModel.callRecentApi(recipeViewModel.recentQueries())
         //Load data
         loadPopularData()
@@ -62,6 +63,18 @@ class RecipeFragment : Fragment() {
     }
 
     //---Popular---//
+    private fun callPopularData() {
+        initPopularRecycler()
+        recipeViewModel.readPopularFromDb.onceObserve(viewLifecycleOwner) {database ->
+            if (database.isNotEmpty()) {
+                database[0].response.results?.let {result ->
+                    fillPopularAdapter(result.toMutableList())
+                }
+            } else {
+                recipeViewModel.callPopularApi(recipeViewModel.popularQueries())
+            }
+        }
+    }
     private fun loadPopularData() {
         binding.apply {
             recipeViewModel.popularData.observe(viewLifecycleOwner) {response->
@@ -73,9 +86,7 @@ class RecipeFragment : Fragment() {
                         setupLoading(false, popularList)
                         response.data?.let {data ->
                             if (data.results!!.isNotEmpty()) {
-                                popularAdapter.setData(data.results)
-                                initPopularRecycler()
-                                autoScrollPopular(data.results)
+                                fillPopularAdapter(data.results.toMutableList())
                             }
                         }
                     }
@@ -111,6 +122,11 @@ class RecipeFragment : Fragment() {
                 binding.popularList.smoothScrollToPosition(autoScrollIndex)
             }
         }
+    }
+
+    private fun fillPopularAdapter(result: MutableList<ResponseRecipes.Result>) {
+        popularAdapter.setData(result)
+        autoScrollPopular(result)
     }
 
     //---Recent---//
