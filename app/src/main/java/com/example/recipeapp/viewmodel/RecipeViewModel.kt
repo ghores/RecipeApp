@@ -71,7 +71,10 @@ class RecipeViewModel @Inject constructor(private val recipeRepository: RecipeRe
     fun callRecentApi(queries: Map<String, String>) = viewModelScope.launch {
         recentData.value = NetworkRequest.Loading()
         val response = recipeRepository.remote.getRecipes(queries)
-        recentData.value = NetworkResponse(response).generalNetworkResponse()
+        recentData.value = recentNetworkResponse(response)
+        //Cache
+        val cache = recentData.value?.data
+        if (cache != null) offlineRecent(cache)
     }
 
     private fun recentNetworkResponse(response: Response<ResponseRecipes>): NetworkRequest<ResponseRecipes> {
@@ -86,4 +89,16 @@ class RecipeViewModel @Inject constructor(private val recipeRepository: RecipeRe
             else -> NetworkRequest.Error(response.message())
         }
     }
+
+    //Local
+    private fun saveRecent(recipeEntity: RecipeEntity) = viewModelScope.launch(Dispatchers.IO) {
+        recipeRepository.local.saveRecipes(recipeEntity)
+    }
+
+    private fun offlineRecent(responseRecipes: ResponseRecipes) {
+        val recipeEntity = RecipeEntity(1, responseRecipes)
+        saveRecent(recipeEntity)
+    }
+
+    val readRecentFromDb: LiveData<List<RecipeEntity>> = recipeRepository.local.loadRecipes().asLiveData()
 }
