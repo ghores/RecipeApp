@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
                 else -> visibilityBottomMenu(true)
             }
         }
+        //Menu
+        binding.mainFabMenu.setOnClickListener {
+            navHost.navController.navigate(R.id.actionToMenu)
+        }
     }
 
     private fun visibilityBottomMenu(isMenuVisible: Boolean) {
