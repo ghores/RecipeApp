@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.FragmentMenuBinding
@@ -22,6 +23,7 @@ class MenuFragment : BottomSheetDialogFragment() {
 
     //Other
     private lateinit var menuViewModel: MenuViewModel
+    private var chipCounter = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +40,21 @@ class MenuFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         //InitViews
         binding.apply {
-
+            //Fill chips
+            setupChip(menuViewModel.mealsList(), mealChipGroup)
+            setupChip(menuViewModel.dietsList(), dietChipGroup)
         }
     }
 
-    private fun setupChip(list: MutableList<String>, view: ChipGroup) {
+    private fun setupChip(list: MutableList<String>, chipGroup: ChipGroup) {
         list.forEach {
             val chip = Chip(requireContext())
             val drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, R.style.DarkChip)
+            chip.setChipDrawable(drawable)
+            chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            chip.id = chipCounter++
+            chip.text = it
+            chipGroup.addView(chip)
         }
     }
 

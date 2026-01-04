@@ -6,7 +6,7 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class RecipeRepository @Inject constructor(private val remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource) {
+class RecipeRepository @Inject constructor(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource) {
     val remote = remoteDataSource
     val local = localDataSource
 }
