@@ -1,14 +1,18 @@
 package com.example.recipeapp.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.recipeapp.data.database.RecipeEntity
 import com.example.recipeapp.data.repository.RecipeRepository
 import com.example.recipeapp.models.recipe.ResponseRecipes
 import com.example.recipeapp.utils.Constants
 import com.example.recipeapp.utils.NetworkRequest
 import com.example.recipeapp.utils.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -33,6 +37,21 @@ class RecipeViewModel @Inject constructor(private val recipeRepository: RecipeRe
         popularData.value = NetworkRequest.Loading()
         val response = recipeRepository.remote.getRecipes(queries)
         popularData.value = NetworkResponse(response).generalNetworkResponse()
+        //Cache
+        val cache = popularData.value?.data
+        if (cache != null) offlinePopular(cache)
+    }
+
+    //Local
+    private fun savePopular(recipeEntity: RecipeEntity) = viewModelScope.launch(Dispatchers.IO) {
+        recipeRepository.local.saveRecipes(recipeEntity)
+    }
+
+    val readPopularFromDb: LiveData<List<RecipeEntity>> = recipeRepository.local.loadRecipes().asLiveData()
+
+    private fun offlinePopular(responseRecipes: ResponseRecipes) {
+        val recipeEntity = RecipeEntity(0, responseRecipes)
+        savePopular(recipeEntity)
     }
 
     //---Recent---//
