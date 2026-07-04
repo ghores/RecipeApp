@@ -2,7 +2,7 @@ package com.example.recipeapp.utils
 
 import retrofit2.Response
 
-open class NetworkResponse<T>(private val response: Response<T>) {
+class NetworkResponse<T>(private val response: Response<T>) {
     fun generalNetworkResponse(): NetworkRequest<T> {
         return when {
             response.message().contains("timeout") -> NetworkRequest.Error("Timeout")

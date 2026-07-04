@@ -29,7 +29,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var body: BodyRegister
+    lateinit var bodyRegister: BodyRegister
 
     @Inject
     lateinit var networkChecker: NetworkChecker
@@ -63,16 +63,16 @@ class RegisterFragment : Fragment() {
                 val lastName = lastNameEdt.text.toString()
                 val userName = userNameEdt.text.toString()
                 //Body
-                body.email = email
-                body.firstName = firstName
-                body.lastName = lastName
-                body.username = userName
+                bodyRegister.email = email
+                bodyRegister.firstName = firstName
+                bodyRegister.lastName = lastName
+                bodyRegister.username = userName
                 //Check network
                 lifecycleScope.launch {
                     networkChecker.checkNetworkAvailability().collect { state ->
                         if (state) {
                             //Call api
-                            viewModel.callRegisterApi(MY_API_KEY, body)
+                            viewModel.callRegisterApi(MY_API_KEY, bodyRegister)
                         } else {
                             root.showSnackBar(getString(R.string.checkConnection))
                         }
@@ -87,10 +87,7 @@ class RegisterFragment : Fragment() {
     private fun loadRegisterData() {
         viewModel.registerData.observe(viewLifecycleOwner) { response ->
             when (response) {
-                is NetworkRequest.Loading -> {
-
-                }
-
+                is NetworkRequest.Loading -> {}
                 is NetworkRequest.Success -> {
                     response.data?.let {
                         viewModel.saveRegisterData(it.username.toString(), it.hash.toString())
@@ -98,10 +95,7 @@ class RegisterFragment : Fragment() {
                         findNavController().navigate(R.id.actionToRecipe)
                     }
                 }
-
-                is NetworkRequest.Error -> {
-                    binding.root.showSnackBar(response.message!!)
-                }
+                is NetworkRequest.Error -> { binding.root.showSnackBar(response.message!!) }
             }
         }
     }

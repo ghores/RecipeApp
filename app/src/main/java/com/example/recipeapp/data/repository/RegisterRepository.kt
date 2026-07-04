@@ -23,19 +23,18 @@ import okio.IOException
 import retrofit2.Response
 import javax.inject.Inject
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = REGISTER_USERNAME_INFO)
+
 @ActivityRetainedScoped
 class RegisterRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val remoteDataSource: RemoteDataSource
 ) {
-
     //Store user info
     private object StoredKeys {
         val username = stringPreferencesKey(REGISTER_USERNAME)
         val hash = stringPreferencesKey(REGISTER_HASH)
     }
-
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = REGISTER_USERNAME_INFO)
 
     suspend fun saveRegisterData(username: String, hash: String) {
         context.dataStore.edit {

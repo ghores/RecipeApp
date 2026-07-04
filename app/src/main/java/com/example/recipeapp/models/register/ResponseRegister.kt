@@ -1,6 +1,5 @@
 package com.example.recipeapp.models.register
 
-
 import com.google.gson.annotations.SerializedName
 
 data class ResponseRegister(

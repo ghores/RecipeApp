@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -17,7 +16,9 @@ import com.example.recipeapp.databinding.FragmentSplashBinding
 import com.example.recipeapp.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @AndroidEntryPoint
 class SplashFragment : Fragment() {
@@ -44,11 +45,11 @@ class SplashFragment : Fragment() {
             versionTxt.text = "${getString(R.string.version)} : ${BuildConfig.VERSION_NAME}"
             //Auto navigate
             lifecycleScope.launch {
-                delay(2500)
+                delay(2500.milliseconds)
                 //Check user info
-                viewModel.readRegisterData.asLiveData().observe(viewLifecycleOwner) {
+                viewModel.readRegisterData.first().let { user ->
                     findNavController().popBackStack(R.id.splashFragment, true)
-                    if (it.username.isNotEmpty()) {
+                    if (user.username.isNotEmpty()) {
                         //Navigate to main page
                         findNavController().navigate(R.id.actionToRecipe)
                     } else {

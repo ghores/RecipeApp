@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val registerRepository: RegisterRepository) : ViewModel() {
-
     //Api
     val registerData = MutableLiveData<NetworkRequest<ResponseRegister>>()
     fun callRegisterApi(apikey: String, body: BodyRegister) = viewModelScope.launch {
