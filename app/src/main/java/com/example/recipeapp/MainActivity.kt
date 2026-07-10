@@ -1,18 +1,15 @@
 package com.example.recipeapp
 
-import android.content.Context
-import  android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.recipeapp.databinding.ActivityMainBinding
-import com.example.recipeapp.utils.MyApp
+import com.example.recipeapp.utils.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.inflationx.viewpump.ViewPumpContextWrapper
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     //Binding
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -53,17 +50,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun attachBaseContext(newBase: Context?) {
-        val app = newBase?.applicationContext as MyApp
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase, app.viewPump))
-    }
-
     override fun onNavigateUp(): Boolean {
         return navHost.navController.navigateUp() || super.onNavigateUp()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 }

@@ -28,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
@@ -115,7 +116,7 @@ class RecipeFragment : Fragment() {
     private fun autoScrollPopular(list: List<ResponseRecipes.Result>) {
         lifecycleScope.launch {
             repeat(Constants.REPEAT_TIME) {
-                delay(Constants.DELAY_TIME)
+                delay(Constants.DELAY_TIME.milliseconds)
                 if (autoScrollIndex < list.size) {
                     autoScrollIndex++
                 } else {
