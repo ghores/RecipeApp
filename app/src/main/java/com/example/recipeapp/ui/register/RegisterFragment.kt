@@ -35,7 +35,7 @@ class RegisterFragment : Fragment() {
     lateinit var networkChecker: NetworkChecker
 
     //Other
-    private val viewModel: RegisterViewModel by viewModels()
+    private val registerViewModel: RegisterViewModel by viewModels()
     private var email = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -72,7 +72,7 @@ class RegisterFragment : Fragment() {
                     networkChecker.checkNetworkAvailability().collect { state ->
                         if (state) {
                             //Call api
-                            viewModel.callRegisterApi(MY_API_KEY, bodyRegister)
+                            registerViewModel.callRegisterApi(MY_API_KEY, bodyRegister)
                         } else {
                             root.showSnackBar(getString(R.string.checkConnection))
                         }
@@ -85,12 +85,12 @@ class RegisterFragment : Fragment() {
     }
 
     private fun loadRegisterData() {
-        viewModel.registerData.observe(viewLifecycleOwner) { response ->
+        registerViewModel.registerData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkRequest.Loading -> {}
                 is NetworkRequest.Success -> {
                     response.data?.let {
-                        viewModel.saveRegisterData(it.username.toString(), it.hash.toString())
+                        registerViewModel.saveRegisterData(it.username.toString(), it.hash.toString())
                         findNavController().popBackStack(R.id.registerFragment, true)
                         findNavController().navigate(R.id.actionToRecipe)
                     }

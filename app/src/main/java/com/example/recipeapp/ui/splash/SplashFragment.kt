@@ -27,7 +27,7 @@ class SplashFragment : Fragment() {
     private val binding get() = _binding!!
 
     //Other
-    private val viewModel: RegisterViewModel by viewModels()
+    private val registerViewModel: RegisterViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSplashBinding.inflate(layoutInflater)
@@ -47,7 +47,7 @@ class SplashFragment : Fragment() {
             lifecycleScope.launch {
                 delay(2500.milliseconds)
                 //Check user info
-                viewModel.readRegisterData.first().let { user ->
+                registerViewModel.readRegisterData.first().let { user ->
                     findNavController().popBackStack(R.id.splashFragment, true)
                     if (user.username.isNotEmpty()) {
                         //Navigate to main page
