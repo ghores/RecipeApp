@@ -1,18 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
-    id("androidx.navigation.safeargs")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
     namespace = "com.example.recipeapp"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.recipeapp"
@@ -32,16 +31,16 @@ android {
                 "proguard-rules.pro"
             )
         }
-        buildFeatures {
-            viewBinding = true
-        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     }
 }
 
@@ -57,47 +56,43 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     //Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     //Architecture components
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     //Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
     //Room database
-    implementation("androidx.room:room-runtime:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.57.2")
-    kapt("com.google.dagger:hilt-compiler:2.57.2")
-    kapt("androidx.hilt:hilt-compiler:1.3.0")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    ksp(libs.androidx.hilt.compiler)
     //Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     //OkHTTP client
-    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
     //Image Loading
-    implementation ("io.coil-kt:coil:2.7.0")
+    implementation(libs.coil)
     //Gson
-    implementation ("com.google.code.gson:gson:2.11.0")
+    implementation(libs.gson)
     //DataStore
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.datastore.preferences)
     //Calligraphy
-    implementation ("io.github.inflationx:calligraphy3:3.1.1")
-    implementation ("io.github.inflationx:viewpump:2.1.1")
+    implementation(libs.calligraphy3)
+    implementation(libs.viewpump)
     //Other
-    implementation (libs.shimmer)
-    implementation (libs.shimmerrecyclerview)
-    implementation ("com.airbnb.android:lottie:5.2.0")
-    implementation ("com.github.MrNouri:DynamicSizes:1.0")
-    implementation ("kr.co.prnd:readmore-textview:1.0.0")
-}
-kapt {
-    correctErrorTypes = true
+    implementation(libs.shimmer)
+    implementation(libs.shimmerrecyclerview)
+    implementation(libs.lottie)
+    implementation(libs.dynamicsizes)
+    implementation(libs.readmore.textview)
 }

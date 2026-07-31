@@ -19,7 +19,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class MenuRepository @Inject constructor(@ApplicationContext private val context: Context) {
+class MenuRepository @Inject constructor(@param:ApplicationContext private val context: Context) {
 
     private object StoredKey {
         val selectMealTitle = stringPreferencesKey(Constants.MENU_MEAL_TITLE_KEY)
