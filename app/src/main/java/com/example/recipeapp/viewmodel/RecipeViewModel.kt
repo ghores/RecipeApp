@@ -65,7 +65,7 @@ class RecipeViewModel @Inject constructor(
 
     fun recentQueries(): HashMap<String, String> {
         viewModelScope.launch {
-            menuRepository.readMenuData.collect{
+            menuRepository.readMenuData.collect {
                 mealType = it.mealTitle
                 dietType = it.dietTile
             }

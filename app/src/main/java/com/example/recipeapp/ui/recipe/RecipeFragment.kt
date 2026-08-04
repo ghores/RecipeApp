@@ -67,7 +67,7 @@ class RecipeFragment : Fragment() {
     //---Popular---//
     private fun callPopularData() {
         initPopularRecycler()
-        recipeViewModel.readPopularFromDb.onceObserve(viewLifecycleOwner) {database ->
+        recipeViewModel.readPopularFromDb.onceObserve(viewLifecycleOwner) { database ->
             if (database.isNotEmpty()) {
                 database[0].response.results?.let {result ->
                     setupLoading(false, binding.popularList)
@@ -80,20 +80,20 @@ class RecipeFragment : Fragment() {
     }
     private fun loadPopularData() {
         binding.apply {
-            recipeViewModel.popularData.observe(viewLifecycleOwner) {response->
+            recipeViewModel.popularData.observe(viewLifecycleOwner) { response ->
                 when(response) {
-                    is NetworkRequest.Loading ->{
+                    is NetworkRequest.Loading -> {
                         setupLoading(true, popularList)
                     }
-                    is NetworkRequest.Success ->{
+                    is NetworkRequest.Success -> {
                         setupLoading(false, popularList)
-                        response.data?.let {data ->
+                        response.data?.let { data ->
                             if (data.results!!.isNotEmpty()) {
                                 fillPopularAdapter(data.results.toMutableList())
                             }
                         }
                     }
-                    is NetworkRequest.Error ->{
+                    is NetworkRequest.Error -> {
                         setupLoading(false, popularList)
                         root.showSnackBar(response.message!!)
                     }
@@ -149,20 +149,20 @@ class RecipeFragment : Fragment() {
 
     private fun loadRecentData() {
         binding.apply {
-            recipeViewModel.recentData.observe(viewLifecycleOwner) {response->
+            recipeViewModel.recentData.observe(viewLifecycleOwner) { response ->
                 when(response) {
-                    is NetworkRequest.Loading ->{
+                    is NetworkRequest.Loading -> {
                         setupLoading(true, recipesList)
                     }
-                    is NetworkRequest.Success ->{
+                    is NetworkRequest.Success -> {
                         setupLoading(false, recipesList)
-                        response.data?.let {data ->
+                        response.data?.let { data ->
                             if (data.results!!.isNotEmpty()) {
                                 recentAdapter.setData(data.results)
                             }
                         }
                     }
-                    is NetworkRequest.Error ->{
+                    is NetworkRequest.Error -> {
                         setupLoading(false, recipesList)
                         root.showSnackBar(response.message!!)
                     }

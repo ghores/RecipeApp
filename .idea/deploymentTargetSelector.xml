@@ -20,7 +20,7 @@
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=RFGYA0S9YPP" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ghazi\.android\avd\Pixel_2_API_25.avd" />
               </handle>
             </Target>
           </targets>
