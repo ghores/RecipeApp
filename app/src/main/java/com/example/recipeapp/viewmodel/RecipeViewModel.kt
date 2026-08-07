@@ -67,7 +67,7 @@ class RecipeViewModel @Inject constructor(
         viewModelScope.launch {
             menuRepository.readMenuData.collect {
                 mealType = it.mealTitle
-                dietType = it.dietTile
+                dietType = it.dietTitle
             }
         }
         val queries: HashMap<String, String> = HashMap()

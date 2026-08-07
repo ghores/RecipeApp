@@ -53,7 +53,7 @@ class MenuFragment : BottomSheetDialogFragment() {
             //Read from menu stored data
             menuViewModel.readMenuStoredItems.asLiveData().onceObserve(viewLifecycleOwner) {
                 chipMealTitle = it.mealTitle
-                chipDietTitle = it.dietTile
+                chipDietTitle = it.dietTitle
                 updateChip(it.mealId, mealChipGroup)
                 updateChip(it.dietId, dietChipGroup)
             }
