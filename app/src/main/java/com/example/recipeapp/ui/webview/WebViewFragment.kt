@@ -26,7 +26,7 @@ class WebViewFragment : Fragment() {
     private val args: WebViewFragmentArgs by navArgs()
     private lateinit var link: String
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding =  FragmentWebViewBinding.inflate(layoutInflater)
         return binding.root
     }
