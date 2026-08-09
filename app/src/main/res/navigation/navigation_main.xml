@@ -102,10 +102,28 @@
         android:id="@+id/stepsFragment"
         android:name="com.example.recipeapp.ui.steps.StepsFragment"
         android:label="StepsFragment"
-        tools:layout="@layout/fragment_steps" >
+        tools:layout="@layout/fragment_steps">
         <argument
             android:name="data"
             app:argType="com.example.recipeapp.models.detail.ResponseDetail$AnalyzedInstruction" />
     </dialog>
+
+    <action
+        android:id="@+id/actionToWebView"
+        app:destination="@id/webViewFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.recipeapp.ui.webview.WebViewFragment"
+        android:label="WebViewFragment"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

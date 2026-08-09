@@ -112,7 +112,8 @@ class DetailFragment : Fragment() {
             data.sourceUrl?.let { source ->
                 sourceImg.isVisible = true
                 sourceImg.setOnClickListener {
-
+                    val direction = DetailFragmentDirections.actionToWebView(source)
+                    findNavController().navigate(direction)
                 }
             }
             //Text
