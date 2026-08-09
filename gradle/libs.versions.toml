@@ -1,5 +1,6 @@
 [versions]
 agp = "9.3.1"
+kotlin = "2.3.20"
 ksp = "2.3.10"
 hilt = "2.60.1"
 hiltExt = "1.4.0"
@@ -83,6 +84,8 @@ readmore-textview = { module = "kr.co.prnd:readmore-textview", version.ref = "re
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }

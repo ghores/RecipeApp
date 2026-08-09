@@ -90,6 +90,22 @@
         android:id="@+id/detailFragment"
         android:name="com.example.recipeapp.ui.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="recipeID"
+            app:argType="integer" />
+        <action
+            android:id="@+id/actionDetailToStep"
+            app:destination="@id/stepsFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/stepsFragment"
+        android:name="com.example.recipeapp.ui.steps.StepsFragment"
+        android:label="StepsFragment"
+        tools:layout="@layout/fragment_steps" >
+        <argument
+            android:name="data"
+            app:argType="com.example.recipeapp.models.detail.ResponseDetail$AnalyzedInstruction" />
+    </dialog>
 
 </navigation>

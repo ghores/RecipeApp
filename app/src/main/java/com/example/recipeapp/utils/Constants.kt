@@ -2,8 +2,9 @@ package com.example.recipeapp.utils
 
 object Constants {
     const val BASE_URL = "https://api.spoonacular.com/"
+    const val BASE_URL_IMAGE_INGREDIENTS = "https://spoonacular.com/cdn/ingredients_100x100/"
     const val CONNECTION_TIME = 60L
-    const val MY_API_KEY = "93df2098721b4558a4484b21897cf5c1"
+    const val MY_API_KEY = "7a810825f8424c7baf65051a4a51d863"
 
     //APIs key
     const val API_KEY = "apiKey"
@@ -45,4 +46,5 @@ object Constants {
     const val DELAY_TIME = 5000L
     const val LIMITED_COUNT = 10
     const val FULL_COUNT = 50
+    var STEPS_COUNT = 0
 }

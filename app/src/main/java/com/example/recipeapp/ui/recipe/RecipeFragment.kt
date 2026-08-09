@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -78,6 +79,7 @@ class RecipeFragment : Fragment() {
             }
         }
     }
+
     private fun loadPopularData() {
         binding.apply {
             recipeViewModel.popularData.observe(viewLifecycleOwner) { response ->
@@ -109,7 +111,7 @@ class RecipeFragment : Fragment() {
         snapHelper.attachToRecyclerView(binding.popularList)
         //Click
         popularAdapter.setOnItemClickListener {
-            //Go to detail page
+            goToDetailPage(it)
         }
     }
 
@@ -170,14 +172,14 @@ class RecipeFragment : Fragment() {
             }
         }
     }
+
     private fun initRecentRecycler() {
         binding.recipesList.setupRecyclerView(LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false), recentAdapter)
         //Click
         recentAdapter.setOnItemClickListener {
-            //Go to detail page
+            goToDetailPage(it)
         }
     }
-
 
     private fun setupLoading(isShownLoading: Boolean, shimmer: ShimmerRecyclerView) {
         shimmer.apply {
@@ -194,6 +196,11 @@ class RecipeFragment : Fragment() {
 
     private fun getEmojiByUnicode(): String {
         return String(Character.toChars(0x1f44b))
+    }
+
+    private fun goToDetailPage(id: Int) {
+        val action = RecipeFragmentDirections.actionToDetail(id)
+        findNavController().navigate(action)
     }
 
     override fun onDestroy() {
