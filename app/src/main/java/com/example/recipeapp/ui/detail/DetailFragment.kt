@@ -17,9 +17,12 @@ import coil.load
 import coil.request.CachePolicy
 import com.example.recipeapp.R
 import com.example.recipeapp.adapter.InstructionsAdapter
+import com.example.recipeapp.adapter.SimilarAdapter
 import com.example.recipeapp.adapter.StepsAdapter
 import com.example.recipeapp.databinding.FragmentDetailBinding
 import com.example.recipeapp.models.detail.ResponseDetail
+import com.example.recipeapp.models.detail.ResponseSimilar
+import com.example.recipeapp.ui.recipe.RecipeFragmentDirections
 import com.example.recipeapp.utils.Constants
 import com.example.recipeapp.utils.NetworkRequest
 import com.example.recipeapp.utils.isVisible
@@ -46,6 +49,9 @@ class DetailFragment : Fragment() {
     @Inject
     lateinit var stepsAdapter: StepsAdapter
 
+    @Inject
+    lateinit var similarAdapter: SimilarAdapter
+
     private val detailViewModel: DetailViewModel by viewModels()
     private val args: DetailFragmentArgs by navArgs()
     private var recipeId = 0
@@ -63,6 +69,7 @@ class DetailFragment : Fragment() {
             //Call Api
             if (recipeId > 0) {
                 detailViewModel.callDetailApi(recipeId, Constants.MY_API_KEY)
+                detailViewModel.callSimilarApi(recipeId, Constants.API_KEY)
             }
         }
         //InitView
@@ -73,10 +80,11 @@ class DetailFragment : Fragment() {
             }
         }
         //Load data
-        loadDataFromApi()
+        loadDetailDataFromApi()
+        loadSimilarData()
     }
 
-    private fun loadDataFromApi() {
+    private fun loadDetailDataFromApi() {
         binding.apply {
             detailViewModel.detailData.observe(viewLifecycleOwner) { response ->
                 when (response) {
@@ -89,6 +97,26 @@ class DetailFragment : Fragment() {
                     }
                     is NetworkRequest.Error -> {
                         loading.isVisible(false, contentLay)
+                        binding.root.showSnackBar(response.message!!)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadSimilarData() {
+        binding.apply {
+            detailViewModel.similarData.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is NetworkRequest.Loading -> { similarList.showShimmer() }
+                    is NetworkRequest.Success -> {
+                        similarList.hideShimmer()
+                        response.data?.let { data ->
+                            iniSimilarData(data)
+                        }
+                    }
+                    is NetworkRequest.Error -> {
+                        similarList.hideShimmer()
                         binding.root.showSnackBar(response.message!!)
                     }
                 }
@@ -183,6 +211,18 @@ class DetailFragment : Fragment() {
                     stepsShowMore.isVisible = true
                 }
             }
+        }
+    }
+
+    private fun iniSimilarData(list: MutableList<ResponseSimilar.ResponseSimilarItem>) {
+        similarAdapter.setData(list)
+        binding.similarList.setupRecyclerView(
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false), similarAdapter
+        )
+        //Click
+        similarAdapter.setOnItemClickListener {
+            val action = RecipeFragmentDirections.actionToDetail(it)
+            findNavController().navigate(action)
         }
     }
 

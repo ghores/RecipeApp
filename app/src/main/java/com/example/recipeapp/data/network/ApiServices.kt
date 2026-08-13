@@ -1,6 +1,7 @@
 package com.example.recipeapp.data.network
 
 import com.example.recipeapp.models.detail.ResponseDetail
+import com.example.recipeapp.models.detail.ResponseSimilar
 import com.example.recipeapp.models.recipe.ResponseRecipes
 import com.example.recipeapp.models.register.BodyRegister
 import com.example.recipeapp.models.register.ResponseRegister
@@ -22,4 +23,7 @@ interface ApiServices {
 
     @GET("recipes/{id}/information")
     suspend fun getDetail(@Path("id") id: Int, @Query(API_KEY) apiKey: String): Response<ResponseDetail>
+
+    @GET("recipes/{id}/similar")
+    suspend fun getSimilarRecipes(@Path("id") id: Int, @Query(API_KEY) apiKey: String): Response<ResponseSimilar>
 }
