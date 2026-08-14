@@ -1,6 +1,8 @@
 package com.example.recipeapp.utils
 
+import android.content.res.ColorStateList
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -53,4 +55,8 @@ fun View.isVisible(isShownLoading: Boolean, container: View) {
         this.isVisible = false
         container.isVisible = true
     }
+}
+
+fun ImageView.setTint(color: Int) {
+    imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, color))
 }

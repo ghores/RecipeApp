@@ -20,6 +20,7 @@ import com.example.recipeapp.R
 import com.example.recipeapp.adapter.InstructionsAdapter
 import com.example.recipeapp.adapter.SimilarAdapter
 import com.example.recipeapp.adapter.StepsAdapter
+import com.example.recipeapp.data.database.entity.FavoriteEntity
 import com.example.recipeapp.databinding.FragmentDetailBinding
 import com.example.recipeapp.models.detail.ResponseDetail
 import com.example.recipeapp.models.detail.ResponseSimilar
@@ -30,6 +31,7 @@ import com.example.recipeapp.utils.NetworkRequest
 import com.example.recipeapp.utils.isVisible
 import com.example.recipeapp.utils.minToHour
 import com.example.recipeapp.utils.setDynamicallyColor
+import com.example.recipeapp.utils.setTint
 import com.example.recipeapp.utils.setupRecyclerView
 import com.example.recipeapp.utils.showSnackBar
 import com.example.recipeapp.viewmodel.DetailViewModel
@@ -64,6 +66,7 @@ class DetailFragment : Fragment() {
     private val args: DetailFragmentArgs by navArgs()
     private var recipeId = 0
     private var isExistsCache = false
+    private var isExistsFavorite = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDetailBinding.inflate(layoutInflater)
@@ -149,6 +152,13 @@ class DetailFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun initViewsWithData(data: ResponseDetail) {
         binding.apply {
+            //Favorite
+            detailViewModel.existsFavorite(data.id!!)
+            checkExistsFavorite()
+            //Click favorite
+            favoriteImg.setOnClickListener {
+                if (isExistsFavorite) deleteFavorite(data) else saveFavorite(data)
+            }
             //Image
             val imageSplit = data.image!!.split("-")
             val imageSize = imageSplit[1].replace(Constants.OLD_IMAGE_SIZE, Constants.NEW_IMAGE_SIZE)
@@ -280,6 +290,41 @@ class DetailFragment : Fragment() {
             chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkGray))
             chip.text = it
             chipGroup.addView(chip)
+        }
+    }
+
+    private fun saveFavorite(data: ResponseDetail) {
+        val favoriteEntity = FavoriteEntity(data.id!!, data)
+        detailViewModel.saveFavorite(favoriteEntity)
+        binding.favoriteImg.apply {
+            setTint(R.color.tart_orange)
+            setImageResource(R.drawable.ic_heart_circle_minus)
+        }
+    }
+
+    private fun deleteFavorite(data: ResponseDetail) {
+        val favoriteEntity = FavoriteEntity(data.id!!, data)
+        detailViewModel.deleteFavorite(favoriteEntity)
+        binding.favoriteImg.apply {
+            setTint(R.color.persianGreen)
+            setImageResource(R.drawable.ic_heart_circle_plus)
+        }
+    }
+
+    private fun checkExistsFavorite() {
+        detailViewModel.existsFavoriteData.observe(viewLifecycleOwner) {
+            isExistsFavorite = it
+            if (it) {
+                binding.favoriteImg.apply {
+                    setTint(R.color.tart_orange)
+                    setImageResource(R.drawable.ic_heart_circle_minus)
+                }
+            } else {
+                binding.favoriteImg.apply {
+                    setTint(R.color.persianGreen)
+                    setImageResource(R.drawable.ic_heart_circle_plus)
+                }
+            }
         }
     }
 

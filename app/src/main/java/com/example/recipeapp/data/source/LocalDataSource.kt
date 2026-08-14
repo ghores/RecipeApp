@@ -2,6 +2,7 @@ package com.example.recipeapp.data.source
 
 import com.example.recipeapp.data.database.RecipeAppDao
 import com.example.recipeapp.data.database.entity.DetailEntity
+import com.example.recipeapp.data.database.entity.FavoriteEntity
 import com.example.recipeapp.data.database.entity.RecipeEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -15,4 +16,10 @@ class LocalDataSource @Inject constructor(private val dao: RecipeAppDao) {
     suspend fun saveDetail(detailEntity: DetailEntity) = dao.saveDetail(detailEntity)
     fun loadDetail(id: Int): Flow<DetailEntity> = dao.loadDetail(id)
     fun existsDetail(id: Int): Flow<Boolean> = dao.existsDetail(id)
+
+    //Favorite
+    suspend fun saveFavorite(favoriteEntity: FavoriteEntity) = dao.saveFavorite(favoriteEntity)
+    suspend fun deleteFavorite(favoriteEntity: FavoriteEntity) = dao.deleteFavorite(favoriteEntity)
+    fun loadFavorite(): Flow<List<FavoriteEntity>> = dao.loadFavorite()
+    fun existsFavorite(id: Int): Flow<Boolean> = dao.existsFavorite(id)
 }
