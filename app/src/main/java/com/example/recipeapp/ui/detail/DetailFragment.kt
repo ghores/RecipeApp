@@ -10,6 +10,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import com.example.recipeapp.models.detail.ResponseDetail
 import com.example.recipeapp.models.detail.ResponseSimilar
 import com.example.recipeapp.ui.recipe.RecipeFragmentDirections
 import com.example.recipeapp.utils.Constants
+import com.example.recipeapp.utils.NetworkChecker
 import com.example.recipeapp.utils.NetworkRequest
 import com.example.recipeapp.utils.isVisible
 import com.example.recipeapp.utils.minToHour
@@ -35,7 +37,10 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
@@ -52,9 +57,13 @@ class DetailFragment : Fragment() {
     @Inject
     lateinit var similarAdapter: SimilarAdapter
 
+    @Inject
+    lateinit var networkChecker: NetworkChecker
+
     private val detailViewModel: DetailViewModel by viewModels()
     private val args: DetailFragmentArgs by navArgs()
     private var recipeId = 0
+    private var isExistsCache = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDetailBinding.inflate(layoutInflater)
@@ -68,8 +77,7 @@ class DetailFragment : Fragment() {
             recipeId = args.recipeID
             //Call Api
             if (recipeId > 0) {
-                detailViewModel.callDetailApi(recipeId, Constants.MY_API_KEY)
-                detailViewModel.callSimilarApi(recipeId, Constants.API_KEY)
+                checkExistsDetailInCache(recipeId)
             }
         }
         //InitView
@@ -79,12 +87,28 @@ class DetailFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+        //Check Internet
+        lifecycleScope.launch {
+            networkChecker.checkNetworkAvailability().collect { state ->
+                delay(200.milliseconds)
+                if (isExistsCache.not()) {
+                    initInternetLayout(state)
+                    if (state) {
+                        loadDetailDataFromApi()
+                    }
+                }
+                //Similar
+                if (state) {
+                    detailViewModel.callSimilarApi(recipeId, Constants.MY_API_KEY)
+                }
+            }
+        }
         //Load data
-        loadDetailDataFromApi()
         loadSimilarData()
     }
 
     private fun loadDetailDataFromApi() {
+        detailViewModel.callDetailApi(recipeId, Constants.MY_API_KEY)
         binding.apply {
             detailViewModel.detailData.observe(viewLifecycleOwner) { response ->
                 when (response) {
@@ -104,23 +128,21 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun loadSimilarData() {
-        binding.apply {
-            detailViewModel.similarData.observe(viewLifecycleOwner) { response ->
-                when (response) {
-                    is NetworkRequest.Loading -> { similarList.showShimmer() }
-                    is NetworkRequest.Success -> {
-                        similarList.hideShimmer()
-                        response.data?.let { data ->
-                            iniSimilarData(data)
-                        }
-                    }
-                    is NetworkRequest.Error -> {
-                        similarList.hideShimmer()
-                        binding.root.showSnackBar(response.message!!)
-                    }
-                }
+    private fun checkExistsDetailInCache(id: Int) {
+        detailViewModel.existsDetail(id)
+        //Load
+        detailViewModel.existsDetailData.observe(viewLifecycleOwner) {
+            isExistsCache = it
+            if (it) {
+                loadDetailDataFromDb()
+                binding.contentLay.isVisible = true
             }
+        }
+    }
+
+    private fun loadDetailDataFromDb() {
+        detailViewModel.readDetailFromDb(recipeId).observe(viewLifecycleOwner) {
+            initViewsWithData(it.responseDetail)
         }
     }
 
@@ -224,6 +246,30 @@ class DetailFragment : Fragment() {
             val action = RecipeFragmentDirections.actionToDetail(it)
             findNavController().navigate(action)
         }
+    }
+
+    private fun loadSimilarData() {
+        binding.apply {
+            detailViewModel.similarData.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is NetworkRequest.Loading -> { similarList.showShimmer() }
+                    is NetworkRequest.Success -> {
+                        similarList.hideShimmer()
+                        response.data?.let { data ->
+                            iniSimilarData(data)
+                        }
+                    }
+                    is NetworkRequest.Error -> {
+                        similarList.hideShimmer()
+                        binding.root.showSnackBar(response.message!!)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initInternetLayout(isConnected: Boolean) {
+        binding.internetLay.isVisible = isConnected.not()
     }
 
     private fun setupChip(list: MutableList<String>, chipGroup: ChipGroup) {

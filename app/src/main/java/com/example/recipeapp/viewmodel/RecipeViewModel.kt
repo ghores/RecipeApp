@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.recipeapp.data.database.RecipeEntity
+import com.example.recipeapp.data.database.entity.RecipeEntity
 import com.example.recipeapp.data.repository.MenuRepository
 import com.example.recipeapp.data.repository.RecipeRepository
 import com.example.recipeapp.models.recipe.ResponseRecipes
