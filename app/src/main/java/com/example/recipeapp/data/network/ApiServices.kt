@@ -2,6 +2,7 @@ package com.example.recipeapp.data.network
 
 import com.example.recipeapp.models.detail.ResponseDetail
 import com.example.recipeapp.models.detail.ResponseSimilar
+import com.example.recipeapp.models.lucky.ResponseLucky
 import com.example.recipeapp.models.recipe.ResponseRecipes
 import com.example.recipeapp.models.register.BodyRegister
 import com.example.recipeapp.models.register.ResponseRegister
@@ -26,4 +27,7 @@ interface ApiServices {
 
     @GET("recipes/{id}/similar")
     suspend fun getSimilarRecipes(@Path("id") id: Int, @Query(API_KEY) apiKey: String): Response<ResponseSimilar>
+
+    @GET("recipes/random")
+    suspend fun getRandomRecipe(@QueryMap queries: Map<String, String>): Response<ResponseLucky>
 }
